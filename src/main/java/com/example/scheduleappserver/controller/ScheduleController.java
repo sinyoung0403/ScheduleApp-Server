@@ -36,5 +36,22 @@ public class ScheduleController {
     return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
   }
 
+  @PatchMapping("/{id}")
+  public ResponseEntity<ScheduleResponseDto> editSchedule(
+          @PathVariable Long id,
+          @RequestBody ScheduleRequestDto dto
+  ) {
+    // 그래서 이걸 둘다 서비스에 넘겨버리는 거지
+    return new ResponseEntity<>(scheduleService.editSchedule(id, dto.getTask(), dto.getAuthor(), dto.getPwd()), HttpStatus.OK);
+  }
 
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteSchedule(
+          @PathVariable Long id,
+          @RequestBody ScheduleRequestDto dto
+  ) {
+    // 실제 DB 에 반영하도록 해야됨.
+    scheduleService.deleteSchedule(id,dto.getPwd());
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 }

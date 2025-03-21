@@ -58,6 +58,30 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
     return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
   }
 
+  @Override
+  public int editSchedule(Long id, String task, String author, String pwd) {
+    // 일단은 이렇게 해보고. 근데 이렇게 하면 단점은 pwd 가 틀렸다는 걸 throw 할 수 없다는 걸 알아야돼.
+    return jdbcTemplate.update("UPDATE schedule " +
+            "SET task = CASE\n" +
+            "        WHEN ? is not null THEN ?\n" +
+            "        ELSE task END,\n" +
+            "  author = CASE\n" +
+            "        WHEN ? is not null THEN ?\n" +
+            "        ELSE author END,\n" +
+            "  updated = ? \n " +
+            "WHERE id = ? AND pwd = ?", task, task, author, author, changeTimestamp(), id, pwd);
+  }
+
+  @Override
+  public void deleteSchedule(Long id) {
+    jdbcTemplate.update("DELETE FROM schedule WHERE id = ?", id);
+  }
+
+  public boolean findScheduleByPwd(Long id, String pwd) {
+    List<Schedule> result = jdbcTemplate.query("SELECT * FROM schedule WHERE id = ? AND pwd = ?", scheduleRowMapperV2(), id, pwd);
+    return result.stream().findAny().isPresent();
+  }
+
   private RowMapper<ScheduleResponseDto> scheduleRowMapper() {
     return new RowMapper<ScheduleResponseDto>() {
       @Override
@@ -88,7 +112,6 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
       }
     };
   }
-
 
   // 현재 시간 반환
   public String changeTimestamp() {

@@ -9,6 +9,4 @@ public class ScheduleRequestDto {
   private String pwd;
   private String created;
   private String updated;
-
-
 }
