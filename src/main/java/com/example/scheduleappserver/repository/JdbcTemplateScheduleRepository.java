@@ -56,6 +56,7 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
   public Schedule findScheduleByIdOrElseThrow(Long id) {
     List<Schedule> result = jdbcTemplate.query("SELECT * FROM schedule WHERE id = ?", scheduleRowMapperV2(), id);
     return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
+
   }
 
   @Override
@@ -80,6 +81,8 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
   public boolean findScheduleByPwd(Long id, String pwd) {
     List<Schedule> result = jdbcTemplate.query("SELECT * FROM schedule WHERE id = ? AND pwd = ?", scheduleRowMapperV2(), id, pwd);
     return result.stream().findAny().isPresent();
+
+
   }
 
   private RowMapper<ScheduleResponseDto> scheduleRowMapper() {
@@ -90,6 +93,24 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
                 rs.getLong("id"),
                 rs.getString("task"),
                 rs.getString("author"),
+
+                rs.getString("created"),
+                rs.getString("updated")
+        );
+      }
+    };
+  }
+
+  private RowMapper<Schedule> scheduleRowMapperV2() {
+    return new RowMapper<Schedule>() {
+      @Override
+      public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new Schedule(
+                rs.getLong("id"),
+                rs.getString("task"),
+                rs.getString("author"),
+                rs.getString("pwd"),
+
                 rs.getString("created"),
                 rs.getString("updated")
         );
