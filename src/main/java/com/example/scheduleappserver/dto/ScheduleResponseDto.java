@@ -10,7 +10,6 @@ public class ScheduleResponseDto {
   private Long id;
   private String task;
   private String author;
-  private String pwd;
   private String created;
   private String updated;
 
@@ -18,8 +17,11 @@ public class ScheduleResponseDto {
     this.id = schedule.getId();
     this.task = schedule.getTask();
     this.author = schedule.getAuthor();
-    this.pwd = schedule.getPwd();
     this.created = schedule.getCreated();
     this.updated = schedule.getUpdated();
   }
+
+
+
+
 }
