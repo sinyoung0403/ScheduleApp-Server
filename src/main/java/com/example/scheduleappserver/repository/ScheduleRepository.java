@@ -8,7 +8,7 @@ import java.util.List;
 public interface ScheduleRepository {
   ScheduleResponseDto saveSchedule(Schedule schedule);
 
-  List<ScheduleResponseDto> findAllSchedule();
+  List<ScheduleResponseDto> findAllSchedule(String author, String updated);
 
   Schedule findScheduleByIdOrElseThrow(Long id);
 }
