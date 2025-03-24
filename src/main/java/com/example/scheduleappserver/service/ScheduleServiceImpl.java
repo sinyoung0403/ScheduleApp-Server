@@ -4,6 +4,7 @@ import com.example.scheduleappserver.dto.ScheduleRequestDto;
 import com.example.scheduleappserver.dto.ScheduleResponseDto;
 import com.example.scheduleappserver.entity.Schedule;
 import com.example.scheduleappserver.repository.ScheduleRepository;
+import io.micrometer.common.util.StringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +42,8 @@ public class ScheduleServiceImpl implements ScheduleService {
   @Transactional
   @Override
   public ScheduleResponseDto editSchedule(Long id, String task, String author, String pwd) {
+    // Entity 라는 객체로 전달 받는 걸 고려. 근데 이걸 그대로 ?  > 챌린지 가져가면 될듯.
+
     // 제목만 수정을 해주던가. 아니면 ?
     // 둘다 수정을 해주던가 ? 아니면 ?
     // 작성자명만 수정을 해주던가. 인데 ? Set 함수를 잘 써야 돼.
@@ -50,19 +53,21 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 1. update 기능을 위한 Dto 를 따로 만들지 ?
     // 2. 그냥 기본 dto 에서 task 와 author 를 받아올지. 근데 내 생각에는 후자가 나을 거 같음 !
     // 먼저 pwd 맞는지 확인
+    if (pwd.isEmpty() || (StringUtils.isEmpty(task) && StringUtils.isEmpty(author))) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+    }
+
+    // id 가 실제 DB 있는지 없는지 확인 = > 있으면 계속 진행. / 없으면 Notfound
+    scheduleRepository.findScheduleByIdOrElseThrow(id);
+
+    // pwd 올바른지 아닌지 확인
     if (!scheduleRepository.findScheduleByPwd(id, pwd)) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Does not exist id =" + id);
     }
 
-    int updatedRow = scheduleRepository.editSchedule(id, task, author, pwd);
-    if (updatedRow == 0) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id =" + id);
-    }
+    scheduleRepository.editSchedule(id, task, author);
 
-    // 만약 업데이트가 되었다면, 해당 id 로 조회되었을 때 정상적인 조회가 이루어져야 함 !
-    Schedule schedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
-
-    return new ScheduleResponseDto(schedule);
+    return new ScheduleResponseDto(scheduleRepository.findScheduleByIdOrElseThrow(id));
   }
 
   @Transactional
@@ -75,6 +80,5 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     scheduleRepository.deleteSchedule(id);
   }
-
 
 }
