@@ -46,7 +46,7 @@ public class JdbcTemplateAuthorRepository implements AuthorRepository {
   }
 
   // 작성자 조회
-  public Author findScheduleByIdOrElseThrow(Long id) {
+  public Author findAuthorByIdOrElseThrow(Long id) {
     List<Author> result = jdbcTemplate.query("SELECT * FROM author WHERE id = ?", authorRowMapper(), id);
     return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
   }
@@ -120,4 +120,8 @@ public class JdbcTemplateAuthorRepository implements AuthorRepository {
     };
   }
 
+  public boolean findAuthorByIdIsEmpty(Long id) {
+    List<Author> result = jdbcTemplate.query("SELECT * FROM author WHERE id = ?", authorRowMapper(), id);
+    return result.stream().findAny().isPresent();
+  }
 }
