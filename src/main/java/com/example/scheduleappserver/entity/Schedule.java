@@ -19,4 +19,9 @@ public class Schedule {
     this.pwd = pwd;
   }
 
+  public void updateTaskAndAuthor(String task, String author) {
+    this.task = task;
+    this.author = author;
+  }
+
 }

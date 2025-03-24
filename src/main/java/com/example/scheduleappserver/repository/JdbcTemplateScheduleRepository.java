@@ -59,8 +59,7 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
   }
 
   @Override
-  public int editSchedule(Long id, String task, String author, String pwd) {
-    // 일단은 이렇게 해보고. 근데 이렇게 하면 단점은 pwd 가 틀렸다는 걸 throw 할 수 없다는 걸 알아야돼.
+  public int editSchedule(Long id, String task, String author) {
     return jdbcTemplate.update("UPDATE schedule " +
             "SET task = CASE\n" +
             "        WHEN ? is not null THEN ?\n" +
@@ -69,7 +68,7 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
             "        WHEN ? is not null THEN ?\n" +
             "        ELSE author END,\n" +
             "  updated = ? \n " +
-            "WHERE id = ? AND pwd = ?", task, task, author, author, changeTimestamp(), id, pwd);
+            "WHERE id = ?", task, task, author, author, changeTimestamp(), id);
   }
 
   @Override

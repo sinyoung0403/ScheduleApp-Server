@@ -1,6 +1,5 @@
 package com.example.scheduleappserver.repository;
 
-import com.example.scheduleappserver.dto.ScheduleRequestDto;
 import com.example.scheduleappserver.dto.ScheduleResponseDto;
 import com.example.scheduleappserver.entity.Schedule;
 
@@ -13,7 +12,7 @@ public interface ScheduleRepository {
 
   Schedule findScheduleByIdOrElseThrow(Long id);
 
-  int editSchedule(Long id, String task, String author, String pwd);
+  int editSchedule(Long id, String task, String author);
 
   boolean findScheduleByPwd(Long id, String pwd);
 
