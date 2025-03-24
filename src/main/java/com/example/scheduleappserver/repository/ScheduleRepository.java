@@ -13,7 +13,7 @@ public interface ScheduleRepository {
 
   Plan findScheduleByIdOrElseThrow(Long id);
 
-  int editSchedule(Long id, String task, String author);
+  int editSchedule(Long id, String task, Long authorId);
 
   boolean findScheduleByPwd(Long id, String pwd);
 

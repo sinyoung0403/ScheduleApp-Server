@@ -69,25 +69,24 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
   }
 
   @Override
-  public int editSchedule(Long id, String task, String author) {
-    return jdbcTemplate.update("UPDATE schedule " +
-            "SET task = CASE\n" +
-            "        WHEN ? is not null THEN ?\n" +
-            "        ELSE task END,\n" +
-            "  author = CASE\n" +
-            "        WHEN ? is not null THEN ?\n" +
-            "        ELSE author END,\n" +
-            "  updated = ? \n " +
-            "WHERE id = ?", task, task, author, author, changeTimestamp(), id);
+  public int editSchedule(Long id, String task, Long authorId) {
+    String sql = "UPDATE plan p " +
+            "SET  task = CASE WHEN ? is not null THEN ? " +
+            "              ELSE task END, " +
+            "     authorId = CASE WHEN ? is not null THEN ? " +
+            "                  ELSE authorId END, " +
+            "     updated = ? " +
+            "WHERE id = ?";
+    return jdbcTemplate.update(sql, task, task, authorId, authorId, changeTimestamp(), id);
   }
 
   @Override
   public void deleteSchedule(Long id) {
-    jdbcTemplate.update("DELETE FROM schedule WHERE id = ?", id);
+    jdbcTemplate.update("DELETE FROM plan WHERE id = ?", id);
   }
 
   public boolean findScheduleByPwd(Long id, String pwd) {
-    List<Plan> result = jdbcTemplate.query("SELECT * FROM schedule WHERE id = ? AND pwd = ?", scheduleRowMapperV2(), id, pwd);
+    List<Plan> result = jdbcTemplate.query("SELECT * FROM plan WHERE id = ? AND pwd = ?", scheduleRowMapperV2(), id, pwd);
     return result.stream().findAny().isPresent();
   }
 
@@ -115,7 +114,9 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
                 rs.getLong("id"),
                 rs.getString("task"),
                 rs.getLong("authorId"),
-                rs.getString("pwd")
+                rs.getString("pwd"),
+                rs.getString("created"),
+                rs.getString("updated")
         );
       }
     };

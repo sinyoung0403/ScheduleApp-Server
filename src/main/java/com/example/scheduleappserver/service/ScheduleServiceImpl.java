@@ -33,7 +33,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     // 먼저 실제 id 값이 있는지 Author 에서 조회
     if (!authorRepository.findAuthorByIdIsEmpty(dto.getAuthorId())) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Does not exist id =" + dto.getAuthorId());
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exist id =" + dto.getAuthorId());
     }
 
     // 그런 후 save 해주면 됨
@@ -59,11 +59,11 @@ public class ScheduleServiceImpl implements ScheduleService {
     return new ScheduleResponseDto(schedule);
   }
 
+  // 일정 수정
   @Transactional
   @Override
-  public ScheduleResponseDto editSchedule(Long id, String task, String author, String pwd) {
+  public ScheduleResponseDto editSchedule(Long id, String task, Long authorId, String pwd) {
     // Entity 라는 객체로 전달 받는 걸 고려. 근데 이걸 그대로 ?  > 챌린지 가져가면 될듯.
-
     // 제목만 수정을 해주던가. 아니면 ?
     // 둘다 수정을 해주던가 ? 아니면 ?
     // 작성자명만 수정을 해주던가. 인데 ? Set 함수를 잘 써야 돼.
@@ -73,19 +73,24 @@ public class ScheduleServiceImpl implements ScheduleService {
     // 1. update 기능을 위한 Dto 를 따로 만들지 ?
     // 2. 그냥 기본 dto 에서 task 와 author 를 받아올지. 근데 내 생각에는 후자가 나을 거 같음 !
     // 먼저 pwd 맞는지 확인
-    if (pwd.isEmpty() || (StringUtils.isEmpty(task) && StringUtils.isEmpty(author))) {
+    if (pwd.isEmpty() || (StringUtils.isEmpty(task) && StringUtils.isEmpty(authorId.toString()))) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     // id 가 실제 DB 있는지 없는지 확인 = > 있으면 계속 진행. / 없으면 Notfound
     scheduleRepository.findScheduleByIdOrElseThrow(id);
 
+    // 그리고 실제 authorId 가 존재하는지도 확인
+    if (!authorRepository.findAuthorByIdIsEmpty(authorId)) {
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The specified 'authorId' does not exist. id = "+authorId);
+    }
+
     // pwd 올바른지 아닌지 확인
     if (!scheduleRepository.findScheduleByPwd(id, pwd)) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Does not exist id =" + id);
     }
 
-    scheduleRepository.editSchedule(id, task, author);
+    scheduleRepository.editSchedule(id, task, authorId);
 
     return new ScheduleResponseDto(scheduleRepository.findScheduleByIdOrElseThrow(id));
   }
