@@ -1,7 +1,8 @@
 package com.example.scheduleappserver.repository;
 
 import com.example.scheduleappserver.dto.ScheduleResponseDto;
-import com.example.scheduleappserver.entity.Schedule;
+import com.example.scheduleappserver.dto.ScheduleShowResponseDto;
+import com.example.scheduleappserver.entity.Plan;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -28,33 +29,42 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
   }
 
   @Override
-  public ScheduleResponseDto saveSchedule(Schedule schedule) {
+  public ScheduleResponseDto saveSchedule(Plan schedule) {
 
     SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
 
-    jdbcInsert.withTableName("schedule").usingGeneratedKeyColumns("id");
-    String nowTimestamp = changeTimestamp();
+    jdbcInsert.withTableName("plan").usingGeneratedKeyColumns("id");
+    String currentTime = changeTimestamp();
 
     Map<String, Object> parameters = new HashMap<>();
     parameters.put("task", schedule.getTask());
-    parameters.put("author", schedule.getAuthor());
+    parameters.put("authorId", schedule.getAuthorId());
     parameters.put("pwd", schedule.getPwd());
-    parameters.put("created", nowTimestamp);
-    parameters.put("updated", nowTimestamp);
+    parameters.put("created", currentTime);
+    parameters.put("updated", currentTime);
 
     Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-    return new ScheduleResponseDto(key.longValue(), schedule.getTask(), schedule.getAuthor(), nowTimestamp, nowTimestamp);
+    return new ScheduleResponseDto(key.longValue(), schedule.getTask(), schedule.getAuthorId(),currentTime,currentTime);
+  }
+
+  // 작성자의 name 과 timestamp 로 일정 조회
+  @Override
+  public List<ScheduleShowResponseDto> findAllSchedule(String name, String updated) {
+    return jdbcTemplate.query("SELECT p.id, p.task, a.id, a.email, p.created, p.updated FROM plan p JOIN author a ON p.authorId = a.id " +
+            "WHERE (a.name = COALESCE(?, a.name)) OR (DATE(p.updated) = COALESCE(?, DATE(p.updated))) ORDER BY p.updated", scheduleRowMapper(), name, updated);
   }
 
   @Override
-  public List<ScheduleResponseDto> findAllSchedule(String author, String updated) {
-    return jdbcTemplate.query("SELECT * FROM schedule WHERE (author = ?) OR (DATE(updated) = ?) ORDER BY updated", scheduleRowMapper(), author, updated);
+  public List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId) {
+    // author 테이블에 있는 아이디 값을 가져와서, 그 아이디 값과 일치하는 일정 조회.
+    return jdbcTemplate.query("SELECT p.id, p.task, a.id, a.email, p.created, p.updated FROM plan p JOIN author a ON p.authorId = a.id " +
+            "WHERE a.id = ?", scheduleRowMapper(), authorId);
   }
 
   @Override
-  public Schedule findScheduleByIdOrElseThrow(Long id) {
-    List<Schedule> result = jdbcTemplate.query("SELECT * FROM schedule WHERE id = ?", scheduleRowMapperV2(), id);
+  public Plan findScheduleByIdOrElseThrow(Long id) {
+    List<Plan> result = jdbcTemplate.query("SELECT * FROM plan WHERE id = ?", scheduleRowMapperV2(), id);
     return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
   }
 
@@ -77,18 +87,19 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
   }
 
   public boolean findScheduleByPwd(Long id, String pwd) {
-    List<Schedule> result = jdbcTemplate.query("SELECT * FROM schedule WHERE id = ? AND pwd = ?", scheduleRowMapperV2(), id, pwd);
+    List<Plan> result = jdbcTemplate.query("SELECT * FROM schedule WHERE id = ? AND pwd = ?", scheduleRowMapperV2(), id, pwd);
     return result.stream().findAny().isPresent();
   }
 
-  private RowMapper<ScheduleResponseDto> scheduleRowMapper() {
-    return new RowMapper<ScheduleResponseDto>() {
+  private RowMapper<ScheduleShowResponseDto> scheduleRowMapper() {
+    return new RowMapper<ScheduleShowResponseDto>() {
       @Override
-      public ScheduleResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new ScheduleResponseDto(
-                rs.getLong("id"),
-                rs.getString("task"),
-                rs.getString("author"),
+      public ScheduleShowResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new ScheduleShowResponseDto(
+                rs.getLong("p.id"),
+                rs.getString("p.task"),
+                rs.getLong("a.id"),
+                rs.getString("email"),
                 rs.getString("created"),
                 rs.getString("updated")
         );
@@ -96,24 +107,22 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
     };
   }
 
-  private RowMapper<Schedule> scheduleRowMapperV2() {
-    return new RowMapper<Schedule>() {
+  private RowMapper<Plan> scheduleRowMapperV2() {
+    return new RowMapper<Plan>() {
       @Override
-      public Schedule mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new Schedule(
+      public Plan mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return new Plan(
                 rs.getLong("id"),
                 rs.getString("task"),
-                rs.getString("author"),
-                rs.getString("pwd"),
-                rs.getString("created"),
-                rs.getString("updated")
+                rs.getLong("authorId"),
+                rs.getString("pwd")
         );
       }
     };
-  }
+}
 
   // 현재 시간 반환
-  public String changeTimestamp() {
+  public static String changeTimestamp() {
     return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
   }
 }

@@ -5,8 +5,6 @@ import lombok.Getter;
 @Getter
 public class ScheduleRequestDto {
   private String task;
-  private String author;
+  private Long authorId;
   private String pwd;
-  private String created;
-  private String updated;
 }
