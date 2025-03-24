@@ -6,7 +6,6 @@ import com.example.scheduleappserver.entity.Author;
 import com.example.scheduleappserver.repository.AuthorRepository;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -37,7 +36,7 @@ public class AuthorServiceImpl implements AuthorService {
   // 작성자 조회
   @Override
   public AuthorResponseDto findAuthorById(Long id) {
-    return new AuthorResponseDto(authorRepository.findScheduleByIdOrElseThrow(id));
+    return new AuthorResponseDto(authorRepository.findAuthorByIdOrElseThrow(id));
   }
 
   // 작성자 수정
@@ -57,7 +56,7 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     // 그리고 변경된 entity 를 response 해주어야 함. 해당 id 를 조회해 오면 됨
-    Author author = authorRepository.findScheduleByIdOrElseThrow(id);
+    Author author = authorRepository.findAuthorByIdOrElseThrow(id);
 
     return new AuthorResponseDto(author);
   }

@@ -9,7 +9,7 @@ import java.util.List;
 public interface AuthorRepository {
   AuthorResponseDto saveAuthor(Author author);
 
-  Author findScheduleByIdOrElseThrow(Long id);
+  Author findAuthorByIdOrElseThrow(Long id);
 
   int updateDate(Long id);
 
@@ -18,4 +18,6 @@ public interface AuthorRepository {
   int editAuthor(Long id, AuthorRequestDto dto);
 
   int deleteAuthor(Long id);
+
+  boolean findAuthorByIdIsEmpty(Long id);
 }
