@@ -1,20 +1,23 @@
 package com.example.scheduleappserver.repository;
 
 import com.example.scheduleappserver.dto.ScheduleResponseDto;
-import com.example.scheduleappserver.entity.Schedule;
+import com.example.scheduleappserver.dto.ScheduleShowResponseDto;
+import com.example.scheduleappserver.entity.Plan;
 
 import java.util.List;
 
 public interface ScheduleRepository {
-  ScheduleResponseDto saveSchedule(Schedule schedule);
+  ScheduleResponseDto saveSchedule(Plan schedule);
 
-  List<ScheduleResponseDto> findAllSchedule(String author, String updated);
+  List<ScheduleShowResponseDto> findAllSchedule(String name, String updated);
 
-  Schedule findScheduleByIdOrElseThrow(Long id);
+  Plan findScheduleByIdOrElseThrow(Long id);
 
   int editSchedule(Long id, String task, String author);
 
   boolean findScheduleByPwd(Long id, String pwd);
 
   void deleteSchedule(Long id);
+
+  List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId);
 }

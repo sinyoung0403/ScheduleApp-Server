@@ -2,7 +2,9 @@ package com.example.scheduleappserver.service;
 
 import com.example.scheduleappserver.dto.ScheduleRequestDto;
 import com.example.scheduleappserver.dto.ScheduleResponseDto;
-import com.example.scheduleappserver.entity.Schedule;
+import com.example.scheduleappserver.dto.ScheduleShowResponseDto;
+import com.example.scheduleappserver.entity.Plan;
+import com.example.scheduleappserver.repository.AuthorRepository;
 import com.example.scheduleappserver.repository.ScheduleRepository;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -15,27 +17,45 @@ import java.util.List;
 @Service
 public class ScheduleServiceImpl implements ScheduleService {
   private final ScheduleRepository scheduleRepository;
+  private final AuthorRepository authorRepository;
 
 
-  public ScheduleServiceImpl(ScheduleRepository scheduleRepository) {
+  public ScheduleServiceImpl(ScheduleRepository scheduleRepository, AuthorRepository authorRepository) {
     this.scheduleRepository = scheduleRepository;
+    this.authorRepository = authorRepository;
   }
 
+  // 일정 추가
   @Override
   public ScheduleResponseDto saveSchedule(ScheduleRequestDto dto) {
     // 요청받은 데이터를 schedule entity 로 변환
-    Schedule schedule = new Schedule(dto.getTask(), dto.getAuthor(), dto.getPwd());
+    Plan schedule = new Plan(dto.getTask(), dto.getAuthorId(), dto.getPwd());
+
+    // 먼저 실제 id 값이 있는지 Author 에서 조회
+    if (!authorRepository.findAuthorByIdIsEmpty(dto.getAuthorId())) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Does not exist id =" + dto.getAuthorId());
+    }
+
+    // 그런 후 save 해주면 됨
     return scheduleRepository.saveSchedule(schedule);
   }
 
+  // 작성자의 name 과 timestamp 로 일정 조회
   @Override
-  public List<ScheduleResponseDto> findAllSchedule(String author, String updated) {
-    return scheduleRepository.findAllSchedule(author, updated);
+  public List<ScheduleShowResponseDto> findAllSchedule(String name, String updated) {
+    return scheduleRepository.findAllSchedule(name, updated);
   }
 
+  // 작성자의 식별자로 일정 조회
+  @Override
+  public List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId) {
+    return scheduleRepository.findAllAuthorSchedule(authorId);
+  }
+
+  // 일정의 식별자로 조회
   @Override
   public ScheduleResponseDto findScheduleById(Long id) {
-    Schedule schedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
+    Plan schedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
     return new ScheduleResponseDto(schedule);
   }
 
