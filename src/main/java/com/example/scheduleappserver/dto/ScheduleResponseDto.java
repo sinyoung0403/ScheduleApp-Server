@@ -13,10 +13,11 @@ public class ScheduleResponseDto {
   private String created;
   private String updated;
 
-  public ScheduleResponseDto(Plan schedule) {
-    this.id = schedule.getId();
-    this.task = schedule.getTask();
-    this.authorId = schedule.getAuthorId();
+  public ScheduleResponseDto(Plan plan) {
+    this.id = plan.getId();
+    this.task = plan.getTask();
+    this.authorId = plan.getAuthorId();
+    this.created = plan.getCreated();
+    this.updated = plan.getUpdated();
   }
-
 }

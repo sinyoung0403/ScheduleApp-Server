@@ -1,7 +1,9 @@
 package com.example.scheduleappserver.repository;
 
+import com.example.scheduleappserver.dto.PageResponseDto;
 import com.example.scheduleappserver.dto.ScheduleResponseDto;
 import com.example.scheduleappserver.dto.ScheduleShowResponseDto;
+import com.example.scheduleappserver.entity.Page;
 import com.example.scheduleappserver.entity.Plan;
 
 import java.util.List;
@@ -13,11 +15,13 @@ public interface ScheduleRepository {
 
   Plan findScheduleByIdOrElseThrow(Long id);
 
-  int editSchedule(Long id, String task, String author);
+  int editSchedule(Long id, String task, Long authorId);
 
   boolean findScheduleByPwd(Long id, String pwd);
 
   void deleteSchedule(Long id);
 
   List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId);
+
+  Page<PageResponseDto> getPlan(int pageNumber, int pageSize);
 }

@@ -5,12 +5,11 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class ScheduleShowResponseDto {
+public class PageResponseDto {
   private Long id;
   private String task;
   private Long authorId;
   private String name;
-  private String email;
   private String created;
   private String updated;
 }

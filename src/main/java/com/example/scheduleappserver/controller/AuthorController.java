@@ -3,11 +3,13 @@ package com.example.scheduleappserver.controller;
 import com.example.scheduleappserver.dto.AuthorRequestDto;
 import com.example.scheduleappserver.dto.AuthorResponseDto;
 import com.example.scheduleappserver.service.AuthorService;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 
 @RestController
 @RequestMapping("/authors")
@@ -20,7 +22,7 @@ public class AuthorController {
 
   // 작성자 생성
   @PostMapping
-  public ResponseEntity<AuthorResponseDto> saveAuthor(@RequestBody AuthorRequestDto authorRequestDto) {
+  public ResponseEntity<AuthorResponseDto> saveAuthor(@RequestBody @Valid AuthorRequestDto authorRequestDto) {
     return new ResponseEntity<>(authorService.saveAuthor(authorRequestDto), HttpStatus.CREATED);
   }
 
@@ -40,7 +42,7 @@ public class AuthorController {
   @PatchMapping("/{id}")
   public ResponseEntity<AuthorResponseDto> editAuthor(
           @PathVariable Long id,
-          @RequestBody AuthorRequestDto dto
+          @RequestBody @Valid AuthorRequestDto dto
   ) {
     return new ResponseEntity<>(authorService.editAuthor(id, dto), HttpStatus.OK);
   }

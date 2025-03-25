@@ -3,6 +3,7 @@ package com.example.scheduleappserver.repository;
 import com.example.scheduleappserver.dto.AuthorRequestDto;
 import com.example.scheduleappserver.dto.AuthorResponseDto;
 import com.example.scheduleappserver.entity.Author;
+import com.example.scheduleappserver.exception.DataNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -48,7 +49,7 @@ public class JdbcTemplateAuthorRepository implements AuthorRepository {
   // 작성자 조회
   public Author findAuthorByIdOrElseThrow(Long id) {
     List<Author> result = jdbcTemplate.query("SELECT * FROM author WHERE id = ?", authorRowMapper(), id);
-    return result.stream().findAny().orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exists id = " + id));
+    return result.stream().findAny().orElseThrow(() -> new DataNotFoundException("해당하는 일정이 존재하지 않습니다. id : " + id));
   }
 
   // 모든 작성자 조회
@@ -120,6 +121,7 @@ public class JdbcTemplateAuthorRepository implements AuthorRepository {
     };
   }
 
+  // Author Id 가 존재하는지 확인
   public boolean findAuthorByIdIsEmpty(Long id) {
     List<Author> result = jdbcTemplate.query("SELECT * FROM author WHERE id = ?", authorRowMapper(), id);
     return result.stream().findAny().isPresent();
