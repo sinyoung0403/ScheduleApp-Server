@@ -9,6 +9,7 @@ public class ScheduleShowResponseDto {
   private Long id;
   private String task;
   private Long authorId;
+  private String name;
   private String email;
   private String created;
   private String updated;

@@ -1,7 +1,9 @@
 package com.example.scheduleappserver.repository;
 
+import com.example.scheduleappserver.dto.PageResponseDto;
 import com.example.scheduleappserver.dto.ScheduleResponseDto;
 import com.example.scheduleappserver.dto.ScheduleShowResponseDto;
+import com.example.scheduleappserver.entity.Page;
 import com.example.scheduleappserver.entity.Plan;
 
 import java.util.List;
@@ -20,4 +22,6 @@ public interface ScheduleRepository {
   void deleteSchedule(Long id);
 
   List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId);
+
+  Page<PageResponseDto> getPlan(int pageNumber, int pageSize);
 }

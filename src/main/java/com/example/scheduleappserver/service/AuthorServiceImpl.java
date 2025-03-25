@@ -3,6 +3,7 @@ package com.example.scheduleappserver.service;
 import com.example.scheduleappserver.dto.AuthorRequestDto;
 import com.example.scheduleappserver.dto.AuthorResponseDto;
 import com.example.scheduleappserver.entity.Author;
+import com.example.scheduleappserver.exception.DataNotFoundException;
 import com.example.scheduleappserver.repository.AuthorRepository;
 import io.micrometer.common.util.StringUtils;
 import org.springframework.http.HttpStatus;
@@ -43,19 +44,16 @@ public class AuthorServiceImpl implements AuthorService {
   @Transactional
   @Override
   public AuthorResponseDto editAuthor(Long id, AuthorRequestDto dto) {
-    // 필수값 검증
-    if (StringUtils.isEmpty(dto.getEmail()) && StringUtils.isEmpty(dto.getName())) {
-      new ResponseStatusException(HttpStatus.BAD_REQUEST);
-    }
 
+    // 1. 업데이트
     int editRow = authorRepository.editAuthor(id, dto);
 
-    // 업데이트 된 row 가 없을 시 에러 발생
+    // 2. 업데이트 된 row 가 없을 시 에러 발생
     if (editRow == 0) {
-      new ResponseStatusException(HttpStatus.NOT_FOUND);
+      throw new DataNotFoundException("해당하는 작성자가 존재하지 않습니다. id : " + id);
     }
 
-    // 그리고 변경된 entity 를 response 해주어야 함. 해당 id 를 조회해 오면 됨
+    // 3. 변경된 Data 를 entity 로 받기 / 조회 실패 시 Not_found 에러
     Author author = authorRepository.findAuthorByIdOrElseThrow(id);
 
     return new AuthorResponseDto(author);
@@ -67,7 +65,7 @@ public class AuthorServiceImpl implements AuthorService {
     int deleteRow = authorRepository.deleteAuthor(id);
 
     if (deleteRow == 0) {
-      new ResponseStatusException(HttpStatus.NOT_FOUND);
+      throw new DataNotFoundException("해당하는 작성자가 존재하지 않습니다. id : " + id);
     }
   }
 }

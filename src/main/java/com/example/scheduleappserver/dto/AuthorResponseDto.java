@@ -13,12 +13,6 @@ public class AuthorResponseDto {
   private String created;
   private String updated;
 
-  public AuthorResponseDto(Long id, String name, String email) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-  }
-
   public AuthorResponseDto(Author author) {
     this.id = author.getId();
     this.name = author.getName();

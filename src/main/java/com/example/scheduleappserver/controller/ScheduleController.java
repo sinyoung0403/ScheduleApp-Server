@@ -1,15 +1,17 @@
 package com.example.scheduleappserver.controller;
 
-import com.example.scheduleappserver.dto.ScheduleRequestDto;
-import com.example.scheduleappserver.dto.ScheduleResponseDto;
-import com.example.scheduleappserver.dto.ScheduleShowResponseDto;
+import com.example.scheduleappserver.dto.*;
 import com.example.scheduleappserver.service.ScheduleService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Validated
 @RestController
 @RequestMapping("/schedules")
 public class ScheduleController {
@@ -21,7 +23,7 @@ public class ScheduleController {
 
   // 일정 추가
   @PostMapping
-  public ResponseEntity<ScheduleResponseDto> saveSchedule(@RequestBody ScheduleRequestDto requestDto) {
+  public ResponseEntity<ScheduleResponseDto> saveSchedule(@RequestBody @Valid ScheduleRequestDto requestDto) {
     return new ResponseEntity<>(scheduleService.saveSchedule(requestDto), HttpStatus.CREATED);
   }
 
@@ -50,7 +52,7 @@ public class ScheduleController {
   @PatchMapping("/{id}")
   public ResponseEntity<ScheduleResponseDto> editSchedule(
           @PathVariable Long id,
-          @RequestBody ScheduleRequestDto dto
+          @RequestBody @Valid ScheduleRequestDto dto
   ) {
     return new ResponseEntity<>(scheduleService.editSchedule(id, dto.getTask(), dto.getAuthorId(), dto.getPwd()), HttpStatus.OK);
   }
@@ -59,16 +61,18 @@ public class ScheduleController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteSchedule(
           @PathVariable Long id,
-          @RequestBody ScheduleRequestDto dto
+          @RequestBody @Valid ScheduleDeleteRequestDto dto
   ) {
-    // 실제 DB 에 반영하도록 해야됨.
     scheduleService.deleteSchedule(id, dto.getPwd());
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-  // 페이징
-//  @GetMapping
-//  public ResponseEntity<List<ScheduleShowResponseDto>> page() {
-//    //
-//  }
+   //페이징
+  @GetMapping("/page")
+  public ResponseEntity<List<PageResponseDto>> page(
+          @RequestParam @Min(1) int pageNumber,
+          @RequestParam @Min(1) int pageSize
+  ) {
+    return new ResponseEntity<>(scheduleService.getPlan(pageNumber,pageSize).getPlanList(),HttpStatus.OK);
+  }
 }
