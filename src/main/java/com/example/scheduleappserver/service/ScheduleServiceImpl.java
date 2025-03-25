@@ -48,16 +48,10 @@ public class ScheduleServiceImpl implements ScheduleService {
   // 작성자의 name 과 timestamp 로 일정 조회
   @Override
   public List<ScheduleShowResponseDto> findAllSchedule(String name, String updated) {
-    if (StringUtils.isEmpty(name)&&StringUtils.isEmpty(updated)) {
+    if (StringUtils.isEmpty(name) && StringUtils.isEmpty(updated)) {
       throw new InvalidInputException("name 과 updated 중 하나의 값은 입력하셔야 합니다.");
     }
     return scheduleRepository.findAllSchedule(name, updated);
-  }
-
-  // 작성자의 식별자로 일정 조회
-  @Override
-  public List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId) {
-    return scheduleRepository.findAllAuthorSchedule(authorId);
   }
 
   // 일정의 식별자로 조회
@@ -65,6 +59,12 @@ public class ScheduleServiceImpl implements ScheduleService {
   public ScheduleResponseDto findScheduleById(Long id) {
     Plan schedule = scheduleRepository.findScheduleByIdOrElseThrow(id);
     return new ScheduleResponseDto(schedule);
+  }
+
+  // 작성자의 식별자로 일정 조회
+  @Override
+  public List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId) {
+    return scheduleRepository.findAllAuthorSchedule(authorId);
   }
 
   // 일정 수정

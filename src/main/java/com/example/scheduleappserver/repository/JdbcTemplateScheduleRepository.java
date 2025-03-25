@@ -63,20 +63,20 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
             "ORDER BY p.updated", scheduleRowMapper(), name, updated);
   }
 
-  // 일정 모두 조회
+  // 작성자의 식별자로 일정 조회
+  @Override
+  public Plan findScheduleByIdOrElseThrow(Long id) {
+    List<Plan> result = jdbcTemplate.query("SELECT * FROM plan WHERE id = ?", scheduleRowMapperV2(), id);
+    return result.stream().findAny().orElseThrow(() -> new DataNotFoundException("해당하는 일정이 존재하지 않습니다. id : " + id));
+  }
+
+  // 일정 식별자로 조회
   @Override
   public List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId) {
     // author 테이블에 있는 아이디 값을 가져와서, 그 아이디 값과 일치하는 일정 조회.
     return jdbcTemplate.query("SELECT p.id, p.task, a.id, a.name, a.email, p.created, p.updated " +
             "FROM plan p JOIN author a ON p.authorId = a.id " +
             "WHERE a.id = ?", scheduleRowMapper(), authorId);
-  }
-
-  // 일정 아이디로 조회
-  @Override
-  public Plan findScheduleByIdOrElseThrow(Long id) {
-    List<Plan> result = jdbcTemplate.query("SELECT * FROM plan WHERE id = ?", scheduleRowMapperV2(), id);
-    return result.stream().findAny().orElseThrow(() -> new DataNotFoundException("해당하는 일정이 존재하지 않습니다. id : " + id));
   }
 
   // 일정 수정
@@ -101,7 +101,7 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
     int offset = (pageNumber - 1) * pageSize;
     List<PageResponseDto> result = jdbcTemplate.query("SELECT p.id, p.task, a.id, a.name ,p.created, p.updated " +
             "FROM plan p JOIN author a on a.id = p.authorId " +
-            "ORDER BY p.id " + "LIMIT ? OFFSET ?", PageRowMapper(), pageSize, offset);
+            "ORDER BY p.id LIMIT ? OFFSET ?", PageRowMapper(), pageSize, offset);
     return new Page<>(result, pageNumber, pageSize);
   }
 
@@ -114,7 +114,13 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
     return new RowMapper<PageResponseDto>() {
       @Override
       public PageResponseDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        return new PageResponseDto(rs.getLong("p.id"), rs.getString("p.task"), rs.getLong("a.id"), rs.getString("a.name"), rs.getString("p.created"), rs.getString("p.updated"));
+        return new PageResponseDto(
+                rs.getLong("p.id"),
+                rs.getString("p.task"),
+                rs.getLong("a.id"),
+                rs.getString("a.name"),
+                rs.getString("p.created"),
+                rs.getString("p.updated"));
       }
     };
   }

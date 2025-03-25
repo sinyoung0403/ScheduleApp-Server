@@ -36,16 +36,16 @@ public class ScheduleController {
     return new ResponseEntity<>(scheduleService.findAllSchedule(name, updated), HttpStatus.OK);
   }
 
-  // 작성자의 식별자로 일정 조회
-  @GetMapping("/authors/{id}")
-  public ResponseEntity<List<ScheduleShowResponseDto>> findAllAuthorSchedule(@PathVariable Long id) {
-    return new ResponseEntity<>(scheduleService.findAllAuthorSchedule(id), HttpStatus.OK);
-  }
-
   // 일정의 식별자로 일정 조회
   @GetMapping("/{id}")
   public ResponseEntity<ScheduleResponseDto> findScheduleById(@PathVariable Long id) {
     return new ResponseEntity<>(scheduleService.findScheduleById(id), HttpStatus.OK);
+  }
+
+  // 작성자의 식별자로 일정 조회
+  @GetMapping("/authors/{id}")
+  public ResponseEntity<List<ScheduleShowResponseDto>> findAllAuthorSchedule(@PathVariable Long id) {
+    return new ResponseEntity<>(scheduleService.findAllAuthorSchedule(id), HttpStatus.OK);
   }
 
   // 일정 수정
@@ -67,12 +67,12 @@ public class ScheduleController {
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
-   //페이징
+  //페이징
   @GetMapping("/page")
   public ResponseEntity<List<PageResponseDto>> page(
           @RequestParam @Min(1) int pageNumber,
           @RequestParam @Min(1) int pageSize
   ) {
-    return new ResponseEntity<>(scheduleService.getPlan(pageNumber,pageSize).getPlanList(),HttpStatus.OK);
+    return new ResponseEntity<>(scheduleService.getPlan(pageNumber, pageSize).getPlanList(), HttpStatus.OK);
   }
 }
