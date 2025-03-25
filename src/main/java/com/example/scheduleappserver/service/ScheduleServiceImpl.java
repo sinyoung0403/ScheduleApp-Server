@@ -64,6 +64,11 @@ public class ScheduleServiceImpl implements ScheduleService {
   // 작성자의 식별자로 일정 조회
   @Override
   public List<ScheduleShowResponseDto> findAllAuthorSchedule(Long authorId) {
+    // 작성자의 id 가 실제 author Table 에 존재하는지 확인
+    if (!authorRepository.findAuthorByIdIsEmpty(authorId)) {
+      throw new DataNotFoundException("작성자의 아이디가 존재하지 않습니다. id : " + authorId);
+    }
+
     return scheduleRepository.findAllAuthorSchedule(authorId);
   }
 
