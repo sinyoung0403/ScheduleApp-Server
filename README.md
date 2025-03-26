@@ -78,8 +78,11 @@ cd ScheduleApp-Server
 
 ### 1. 필수 과제
 
+![ERD Table](https://github.com/user-attachments/assets/83159944-9a94-4aed-b6f3-e7433a79e386)
 
 ### 2. 도전 과제
+
+![Plan ERD](https://github.com/user-attachments/assets/0bb884cd-dfaa-4679-8ec1-76f644af7e2f)
 
 ---
 
