@@ -39,7 +39,7 @@ git clone https://github.com/sinyoung0403/ScheduleApp-Server.git
 cd ScheduleApp-Server
 ```
 
-### 2. My SQL 설정 및 DB 실행
+### 2. My SQL 설정 ( DB 실행 )
 
 - MySQL 이 설치되어 있어야 합니다.
 - `src/main/resources/sql` 에 있는 sql 파일들을 실행시켜주세요.
@@ -57,7 +57,9 @@ cd ScheduleApp-Server
 - 상단의 Run 버튼을 클릭하거나, Shift+F10 을 눌러주세요.
 
 
-### 
+### 5. PostMan Test
+
+- `src/main/resources/schedule.postman_collection.json` 를 통해서 Postman json 을 import 를 해주면 됩니다. 
 
 ---
 
