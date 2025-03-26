@@ -39,7 +39,7 @@ git clone https://github.com/sinyoung0403/ScheduleApp-Server.git
 cd ScheduleApp-Server
 ```
 
-### 2. My SQL 설정
+### 2. My SQL 설정 및 DB 실행
 
 - MySQL 이 설치되어 있어야 합니다.
 - `src/main/resources/sql` 에 있는 sql 파일들을 실행시켜주세요.
