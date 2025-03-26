@@ -1,6 +1,6 @@
 |                                          📅 ScheduleApp-Server 📅                                          |  
 |:------------------------------------------------------------------------------------------------------------------:|
-| ![image](https://github.com/user-attachments/assets/3f0705da-87a1-4590-9731-7c6942571f74?v=4&size=64) |
+| <img src="https://github.com/user-attachments/assets/3f0705da-87a1-4590-9731-7c6942571f74" width="200"> |
 
 
 ---
