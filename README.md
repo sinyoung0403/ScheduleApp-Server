@@ -1,4 +1,133 @@
+|                                          📅 ScheduleApp-Server 📅                                          |  
+|:------------------------------------------------------------------------------------------------------------------:|
+|  |
+
+
+---
+
+## 🧑‍💻 개발자 소개
+
+|  |                                   팀원                                   |
+|:-------------:|:----------------------------------------------------------------------:|
+|프로필| ![image](https://avatars.githubusercontent.com/u/94594402?v=4&size=64) |
+|이름|                                  박신영                                   |
+|GitHub|                              sinyoung0403                              |
+|기술블로그|                 [블로그](https://sintory-04.tistory.com/)                 |
+
+---
+
+## ⚒ 프로젝트
+
+### 1. 프로젝트 이름
+
+- **" ScheduleApp-Server "**
+
+### 2. 프로젝트 소개
+
+- 이 프로젝트는 일정과 작성자를 관리할 수 있는 백엔드 API 서버입니다.
+- Spring Boot와 MySQL을 사용하여 일정 및 작성자의 CRUD 기능을 제공합니다.
+
+--
+
+## 🚀 프로젝트 실행 방법
+
+### 1. Git clone
+
+```bash
+git clone https://github.com/sinyoung0403/ScheduleApp-Server.git
+cd ScheduleApp-Server
+```
+=
+### 2. My SQL 설정
+
+- MySQL 이 설치되어 있어야 합니다.
+- `src/main/resources/sql` 에 있는 sql 파일들을 실행시켜주세요.
+- 실행 순서 1. `schedule.sql` -> 2. `plan-authortable.sql` -> 3. `schedule.sql` 
+
+### 3. 환경변수 설정
+
+-`src/main/resources/application.properties` 에 있는 properties 파일을 본인의 DB 정보에 맞게 수정해주세요.
+- `spring.datasource.username=root` root 를 본인의 username 으로 수정해주세요.
+- `spring.datasource.password=1111` 1111 를 본인의 비밀번호로 수정해주세요.
+
+### 4. Run ScheduleAppServerApplication
+
+- `src/main/java/com/example/scheduleappserver/ScheduleAppServerApplication.java` 를 실행해주세요.
+- 상단의 Run 버튼을 클릭하거나, Shift+F10 을 눌러주세요.
+
+
+### 
+
+---
+
+## 📌 API 명세
+
+### 1. 일정 API
+
 ![일정API](https://github.com/user-attachments/assets/5dc72a18-c564-42e9-8c3d-2deec09b70e4)
 
+### 2. 작성자 API
+
 ![작성자 API](https://github.com/user-attachments/assets/8a559907-9d56-48f8-8f1d-c4bb249e02a0)
+
+
+---
+
+## 🔗 ERD
+
+
+### 1. 필수 과제
+
+
+### 2. 도전 과제
+
+---
+
+## 🗄️ 데이터베이스 스키마 (SQL Query)
+
+### 1. [필수] schedule Table
+
+```mysql
+CREATE TABLE schedule (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '식별자',
+    task TEXT COMMENT '할일',
+    author CHAR(10) COMMENT '작성자명',
+    pwd CHAR(20) COMMENT '비밀번호',
+    created DATETIME COMMENT '작성일',
+    updated DATETIME COMMENT '수정일'
+);
+```
+### 2. [도전] Plan Table
+
+```mysql
+create table plan
+(
+    id       bigint auto_increment comment '할일 식별자'
+        primary key,
+    authorId bigint    comment '작성자 식별자',
+    task     text      comment '할일',
+    pwd      char(20)  comment '비밀번호',
+    created  timestamp comment '작성일',
+    updated  timestamp comment '수정일',
+    constraint authorId_FK
+        foreign key (authorId) references author (id)
+);
+```
+
+### 3. [도전] Author Table
+
+```mysql
+create table author
+(
+    id      bigint auto_increment comment '작성자 식별자'
+        primary key,
+    name    char(10)  null comment '작성자명',
+    email   char(100) null comment '이메일',
+    created datetime  null comment '작성일',
+    updated datetime  null comment '수정일',
+    constraint check_name
+        check (true)
+);
+```
+
 
