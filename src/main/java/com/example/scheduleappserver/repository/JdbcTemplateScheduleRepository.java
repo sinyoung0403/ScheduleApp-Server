@@ -67,7 +67,8 @@ public class JdbcTemplateScheduleRepository implements ScheduleRepository {
   @Override
   public Plan findScheduleByIdOrElseThrow(Long id) {
     List<Plan> result = jdbcTemplate.query("SELECT * FROM plan WHERE id = ?", scheduleRowMapperV2(), id);
-    return result.stream().findAny().orElseThrow(() -> new DataNotFoundException("해당하는 일정이 존재하지 않습니다. id : " + id));
+    return result.stream().findAny().orElseThrow(() -> new DataNotFoundException("해당하는 일정이 존재하지 않습니다. id : " + id)
+    );
   }
 
   // 일정 식별자로 조회

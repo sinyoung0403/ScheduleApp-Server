@@ -1,5 +1,6 @@
 package com.example.scheduleappserver.handler;
 
+import com.example.scheduleappserver.exception.DataNotFoundException;
 import com.example.scheduleappserver.exception.InvalidInputException;
 import com.example.scheduleappserver.exception.InvalidPasswordException;
 import jakarta.validation.ConstraintViolationException;
@@ -17,12 +18,6 @@ import java.util.zip.DataFormatException;
 
 @ControllerAdvice
 class GlobalExceptionHandler {
-
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> handleGeneralException(Exception ex) {
-    return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-  }
-
   // 파라미터가 없을 경우
   @ExceptionHandler(MissingServletRequestParameterException.class)
   public ResponseEntity<String> handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
@@ -36,8 +31,8 @@ class GlobalExceptionHandler {
   }
 
   // 데이터 조회가 불가할 경우
-  @ExceptionHandler(DataFormatException.class)
-  public ResponseEntity<String> handleDataFormatException(DataFormatException ex) {
+  @ExceptionHandler(DataNotFoundException.class)
+  public ResponseEntity<String> handleDataNotFoundException(DataNotFoundException ex) {
     return new ResponseEntity<>("An error occurred: " + ex.getMessage(), HttpStatus.NOT_FOUND);
   }
 
