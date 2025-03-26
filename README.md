@@ -27,7 +27,7 @@
 - 이 프로젝트는 일정과 작성자를 관리할 수 있는 백엔드 API 서버입니다.
 - Spring Boot와 MySQL을 사용하여 일정 및 작성자의 CRUD 기능을 제공합니다.
 
---
+---
 
 ## 🚀 프로젝트 실행 방법
 
@@ -37,7 +37,7 @@
 git clone https://github.com/sinyoung0403/ScheduleApp-Server.git
 cd ScheduleApp-Server
 ```
-=
+
 ### 2. My SQL 설정
 
 - MySQL 이 설치되어 있어야 합니다.
@@ -46,7 +46,7 @@ cd ScheduleApp-Server
 
 ### 3. 환경변수 설정
 
--`src/main/resources/application.properties` 에 있는 properties 파일을 본인의 DB 정보에 맞게 수정해주세요.
+- `src/main/resources/application.properties` 에 있는 properties 파일을 본인의 DB 정보에 맞게 수정해주세요.
 - `spring.datasource.username=root` root 를 본인의 username 으로 수정해주세요.
 - `spring.datasource.password=1111` 1111 를 본인의 비밀번호로 수정해주세요.
 
@@ -131,3 +131,33 @@ create table author
 ```
 
 
+---
+
+## PostMan Test
+
+### 1. Author
+
+#### 1) 작성자 추가
+
+#### 2) 작성자 전부 조회
+
+
+#### 3) 작성자 단건 조회
+
+#### 4) 작성자 수정
+
+#### 5) 작성자 삭제
+
+### 2. Plan
+
+#### 1) 할일 추가
+
+#### 2) 할일 전부 조회 (작성자 이름과 수정일을 기준으로)
+
+#### 3) 할일 단건 조회 (할일의 식별자)
+
+#### 4) 할일 단건 조회 (작성자의 식별자)
+
+#### 5) 할일 수정
+
+#### 6) 할일 삭제
