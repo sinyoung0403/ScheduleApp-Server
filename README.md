@@ -186,5 +186,28 @@ create table author
 
 ![image](https://github.com/user-attachments/assets/ea293b06-9eac-472e-bd78-fc17365ccb29)
 
+### 3. Error
 
+#### 1) MissingServletRequestParameterException
 
+![파라미터가 없을 경우](https://github.com/user-attachments/assets/63f9e49f-6049-47d3-bb92-e1f9e08e4854)
+
+#### 2) InvalidPasswordException
+
+![비밀번호가 잘못되었을 경우](https://github.com/user-attachments/assets/952b3c7c-dec6-4a48-b220-fd7719826961)
+
+#### 3) DataNotFoundException // 데이터 조회 불가
+
+![데이터가 없을 경우](https://github.com/user-attachments/assets/ad276278-0eae-482a-b2ae-29c16b605120)
+
+#### 4) ConstraintViolationException
+
+![validated 에러](https://github.com/user-attachments/assets/05e8bddd-1ac0-47b9-a99f-496532140e47)
+
+#### 5) MethodArgumentNotValidException
+
+![valid 에러](https://github.com/user-attachments/assets/8a658987-d463-47ff-97af-43b2677d8374)
+
+#### 6) InvalidInputException
+
+![InvalidInputException](https://github.com/user-attachments/assets/05e790d6-c969-40e7-83f4-e2ab4b734b2d)
