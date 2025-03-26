@@ -115,6 +115,7 @@ create table plan
     updated  timestamp comment '수정일',
     constraint authorId_FK
         foreign key (authorId) references author (id)
+            on update cascade on delete cascade
 );
 ```
 
