@@ -219,3 +219,21 @@ create table author
 #### 6) InvalidInputException
 
 ![InvalidInputException](https://github.com/user-attachments/assets/05e790d6-c969-40e7-83f4-e2ab4b734b2d)
+
+
+
+## 📚 Stacks
+
+### ✔️ Language & Framework
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">
+<img src="https://img.shields.io/badge/spring-6DB33F?style=for-the-badge&logo=spring&logoColor=white">
+<img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=Spring Boot&logoColor=white"/>
+
+### ✔️ DataBase
+  <img src="https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white"> 
+
+
+### ✔️ Environment
+<img src="https://img.shields.io/badge/intellijidea-000000?style=for-the-badge&logo=intellijidea&logoColor=white"> <img src="https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white"> <img src="https://img.shields.io/badge/git-F05032?style=for-the-badge&logo=git&logoColor=white">
+
+
