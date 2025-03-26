@@ -1,6 +1,6 @@
 |                                          📅 ScheduleApp-Server 📅                                          |  
 |:------------------------------------------------------------------------------------------------------------------:|
-|  |
+| ![image](https://github.com/user-attachments/assets/3f0705da-87a1-4590-9731-7c6942571f74?v=4&size=64) |
 
 
 ---
@@ -78,8 +78,11 @@ cd ScheduleApp-Server
 
 ### 1. 필수 과제
 
+![ERD Table](https://github.com/user-attachments/assets/83159944-9a94-4aed-b6f3-e7433a79e386)
 
 ### 2. 도전 과제
+
+![Plan ERD](https://github.com/user-attachments/assets/0bb884cd-dfaa-4679-8ec1-76f644af7e2f)
 
 ---
 
@@ -133,31 +136,55 @@ create table author
 
 ---
 
-## PostMan Test
+## 📜 PostMan Test
 
 ### 1. Author
 
 #### 1) 작성자 추가
 
+![image](https://github.com/user-attachments/assets/1b4e571b-cedf-444c-af1c-f488072001e6)
+
 #### 2) 작성자 전부 조회
 
+![image](https://github.com/user-attachments/assets/7263c306-533c-48db-8550-342c4659c2f9)
 
 #### 3) 작성자 단건 조회
 
+![image](https://github.com/user-attachments/assets/17d9e056-b2f0-466b-8bb5-c842612e268a)
+
 #### 4) 작성자 수정
 
+![image](https://github.com/user-attachments/assets/3ca5a079-88bd-43e9-9565-3887e1d2ccef)
+
 #### 5) 작성자 삭제
+
+![image](https://github.com/user-attachments/assets/ae0b92ff-2b59-4368-87d0-94eb0edd9715)
 
 ### 2. Plan
 
 #### 1) 할일 추가
 
+![image](https://github.com/user-attachments/assets/2faaba39-f1d4-49b8-8a2e-297a85648918)
+
 #### 2) 할일 전부 조회 (작성자 이름과 수정일을 기준으로)
+
+![image](https://github.com/user-attachments/assets/06232449-24cb-4824-bc81-5856ef0cf59a)
 
 #### 3) 할일 단건 조회 (할일의 식별자)
 
+![image](https://github.com/user-attachments/assets/5b62d3a4-b9d8-4f16-9a49-6492d00f98ba)
+
 #### 4) 할일 단건 조회 (작성자의 식별자)
+
+![image](https://github.com/user-attachments/assets/5c036eb4-bb2d-4c47-bdfc-84b3dae0049a)
 
 #### 5) 할일 수정
 
+![image](https://github.com/user-attachments/assets/1c0624a8-88a4-4e20-8413-6c5075956547)
+
 #### 6) 할일 삭제
+
+![image](https://github.com/user-attachments/assets/ea293b06-9eac-472e-bd78-fc17365ccb29)
+
+
+
