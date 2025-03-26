@@ -54,7 +54,7 @@ cd ScheduleApp-Server
 ### 4. Run ScheduleAppServerApplication
 
 - `src/main/java/com/example/scheduleappserver/ScheduleAppServerApplication.java` 를 실행해주세요.
-- 상단의 Run 버튼을 클릭하거나, Shift+F10 을 눌러주세요.
+- 상단의 Run 버튼을 클릭하거나, Shift+F10 을 눌러주세요.  
 
 
 ### 5. PostMan Test
