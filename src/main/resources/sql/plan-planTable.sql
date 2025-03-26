@@ -5,13 +5,14 @@ create table plan
 (
     id       bigint auto_increment comment '할일 식별자'
         primary key,
-    authorId bigint    comment '작성자 식별자',
-    task     text      comment '할일',
-    pwd      char(20)  comment '비밀번호',
-    created  timestamp comment '작성일',
-    updated  timestamp comment '수정일',
+    authorId bigint    null comment '작성자 식별자',
+    task     text      null comment '할일',
+    pwd      char(20)  null comment '비밀번호',
+    created  timestamp null comment '작성일',
+    updated  timestamp null comment '수정일',
     constraint authorId_FK
         foreign key (authorId) references author (id)
+            on update cascade on delete cascade
 );
 
 -- DATA INSERT SQL
