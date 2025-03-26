@@ -26,6 +26,7 @@
 
 - 이 프로젝트는 일정과 작성자를 관리할 수 있는 백엔드 API 서버입니다.
 - Spring Boot와 MySQL을 사용하여 일정 및 작성자의 CRUD 기능을 제공합니다.
+- git brunch 중 "essentail" 은 필수과제, "challenge" 는 도전과제를 뜻합니다.
 
 ---
 
