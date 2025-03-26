@@ -24,7 +24,7 @@ public class ScheduleController {
 
   // 일정 추가
   @PostMapping
-  public ResponseEntity<ScheduleResponseDto> saveSchedule(@RequestBody @Valid ScheduleRequestDto requestDto) {
+  public ResponseEntity<ScheduleResponseDto> saveSchedule(@Valid @RequestBody ScheduleRequestDto requestDto) {
     return new ResponseEntity<>(scheduleService.saveSchedule(requestDto), HttpStatus.CREATED);
   }
 
@@ -53,7 +53,7 @@ public class ScheduleController {
   @PatchMapping("/{id}")
   public ResponseEntity<ScheduleResponseDto> editSchedule(
           @PathVariable Long id,
-          @RequestBody @Valid ScheduleRequestDto dto
+          @Valid @RequestBody ScheduleRequestDto dto
   ) {
     return new ResponseEntity<>(scheduleService.editSchedule(id, dto.getTask(), dto.getAuthorId(), dto.getPwd()), HttpStatus.OK);
   }
@@ -62,7 +62,7 @@ public class ScheduleController {
   @DeleteMapping("/{id}")
   public ResponseEntity<Void> deleteSchedule(
           @PathVariable Long id,
-          @RequestBody @Valid ScheduleDeleteRequestDto dto
+          @Valid @RequestBody ScheduleDeleteRequestDto dto
   ) {
     scheduleService.deleteSchedule(id, dto.getPwd());
     return new ResponseEntity<>(HttpStatus.OK);
@@ -71,8 +71,8 @@ public class ScheduleController {
   //페이징
   @GetMapping("/page")
   public ResponseEntity<List<PageResponseDto>> page(
-          @RequestParam @Min(1) int pageNumber,
-          @RequestParam @Min(1) int pageSize
+          @Min(1) @RequestParam int pageNumber,
+          @Min(1) @RequestParam int pageSize
   ) {
     return new ResponseEntity<>(scheduleService.getPlan(pageNumber, pageSize).getPlanList(), HttpStatus.OK);
   }
